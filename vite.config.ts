@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 5174,
-    // Enable HTTPS for local development to match Supabase API protocol
-    https: true
+    // Disable HTTPS to allow Supabase connections in development
+    https: false
   }
 })
