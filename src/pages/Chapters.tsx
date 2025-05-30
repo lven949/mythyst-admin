@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { supabase } from '../../lib/supabase';
+import { supabase } from '../lib/supabase';
 import { Edit2, Trash2, Star, Clock, Plus, Upload } from 'lucide-react';
 import Papa from 'papaparse';
 
