@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '../../lib/supabase';
+import { supabase } from '../lib/supabase';
 import { AlertCircle, Loader2, Save, DollarSign, Percent } from 'lucide-react';
 
 interface PlatformSettings {
