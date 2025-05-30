@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Outlet } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
@@ -20,7 +20,9 @@ import {
   Tag,
   CheckSquare,
   MessageCircle,
-  Image
+  Image,
+  LogOut,
+  User
 } from 'lucide-react';
 
 const menuItems = [
@@ -52,6 +54,10 @@ const menuItems = [
 const AdminLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [userProfile, setUserProfile] = useState<{
+    username: string;
+    avatar_url: string | null;
+  } | null>(null);
 
   useEffect(() => {
     checkAdminAuth();
@@ -67,7 +73,7 @@ const AdminLayout = () => {
 
       const { data: profile } = await supabase
         .from('user_profiles')
-        .select('role')
+        .select('role, username, avatar_url')
         .eq('id', user.id)
         .single();
 
@@ -76,9 +82,23 @@ const AdminLayout = () => {
         navigate('/login');
         return;
       }
+
+      setUserProfile({
+        username: profile.username,
+        avatar_url: profile.avatar_url
+      });
     } catch (error) {
       console.error('Error checking admin status:', error);
       navigate('/login');
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await supabase.auth.signOut();
+      navigate('/login');
+    } catch (error) {
+      console.error('Error signing out:', error);
     }
   };
 
@@ -87,7 +107,7 @@ const AdminLayout = () => {
       {/* Sidebar */}
       <aside className="w-64 bg-white dark:bg-gray-800 shadow-sm overflow-y-auto">
         <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-          <h1 className="text-xl font-bold">Novel Admin</h1>
+          <h1 className="text-xl font-bold">管理后台</h1>
         </div>
         <nav className="mt-5 px-2">
           <div className="space-y-1">
@@ -118,13 +138,45 @@ const AdminLayout = () => {
       </aside>
 
       {/* Main content */}
-      <main className="flex-1 overflow-auto">
-        <div className="py-6">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-            <Outlet />
+      <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Header */}
+        <header className="bg-white dark:bg-gray-800 shadow-sm">
+          <div className="flex justify-end items-center px-4 h-16">
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center">
+                {userProfile?.avatar_url ? (
+                  <img
+                    src={userProfile.avatar_url}
+                    alt={userProfile.username}
+                    className="h-8 w-8 rounded-full object-cover"
+                  />
+                ) : (
+                  <div className="h-8 w-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+                    <User className="h-5 w-5 text-gray-500" />
+                  </div>
+                )}
+                <span className="ml-2 text-sm font-medium">{userProfile?.username}</span>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="flex items-center text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+              >
+                <LogOut className="h-5 w-5" />
+                <span className="ml-2 text-sm">退出登录</span>
+              </button>
+            </div>
           </div>
-        </div>
-      </main>
+        </header>
+
+        {/* Page content */}
+        <main className="flex-1 overflow-auto">
+          <div className="py-6">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+              <Outlet />
+            </div>
+          </div>
+        </main>
+      </div>
     </div>
   );
 };
