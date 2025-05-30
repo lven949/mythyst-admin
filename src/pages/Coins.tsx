@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { supabase } from '../../lib/supabase';
+import { supabase } from '../lib/supabase';
 import { ArrowUpDown, Calendar, Search, Download, Filter, Loader2 } from 'lucide-react';
 
 interface CoinTransaction {
