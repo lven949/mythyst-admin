@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { supabase, testConnection } from '../../lib/supabase';
+import { supabase, testConnection } from '../lib/supabase';
 import { Edit2, Trash2, CheckCircle, AlertCircle, WifiOff, RefreshCw, ArrowUpDown } from 'lucide-react';
 
 interface Book {
