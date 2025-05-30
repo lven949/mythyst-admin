@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { supabase } from '../../lib/supabase';
+import { supabase } from '../lib/supabase';
 import { Eye, ArrowUpDown, Loader2, AlertCircle, Pencil, X, Save } from 'lucide-react';
 
 interface User {
