@@ -6,6 +6,7 @@ import { Toaster } from 'react-hot-toast';
 import AdminLayout from './components/AdminLayout';
 
 // Pages
+import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Books from './pages/Books';
 import Chapters from './pages/Chapters';
@@ -36,6 +37,7 @@ function App() {
       <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100">
         <Toaster position="top-center" reverseOrder={false} />
         <Routes>
+          <Route path="/login" element={<Login />} />
           <Route path="/" element={<AdminLayout />}>
             <Route index element={<Dashboard />} />
             <Route path="books" element={<Books />} />

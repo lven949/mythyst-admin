@@ -61,12 +61,10 @@ const AdminLayout = () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        // Redirect to login if not authenticated
-        window.location.href = '/login';
+        navigate('/login');
         return;
       }
 
-      // Check if user is admin
       const { data: profile } = await supabase
         .from('user_profiles')
         .select('role')
@@ -74,13 +72,13 @@ const AdminLayout = () => {
         .single();
 
       if (!profile || profile.role !== 'admin') {
-        // Redirect to home if not admin
-        window.location.href = '/';
+        await supabase.auth.signOut();
+        navigate('/login');
         return;
       }
     } catch (error) {
       console.error('Error checking admin status:', error);
-      window.location.href = '/login';
+      navigate('/login');
     }
   };
 
