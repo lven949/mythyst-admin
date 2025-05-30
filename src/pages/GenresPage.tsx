@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { supabase } from '../../lib/supabase';
+import { supabase } from '../lib/supabase';
 import { Plus, Edit2, Trash2, AlertCircle, CheckCircle, X, HelpCircle, Loader2 } from 'lucide-react';
 
 interface Genre {
